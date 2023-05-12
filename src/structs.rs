@@ -636,7 +636,7 @@ impl Instr {
 
 // REPL structs
 
-pub enum CompileResponse{
+pub enum CompileResponse {
     Define(String, Vec<Instr>, Option<bool>),
     FnDefn(String, Vec<String>, i32, Vec<Instr>),
     Expr(Vec<Instr>),

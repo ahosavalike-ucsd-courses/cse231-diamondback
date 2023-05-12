@@ -229,10 +229,13 @@ pub fn repl(eval_input: Option<(&Expr, &str)>) {
                     instrs
                 }
                 CompileResponse::FnDefn(f, a, depth, instrs) => {
-                    com.fns.insert(f.clone(), FunEnv { argc: a.len() as i32, depth });
-                    labels.insert(Label::new(Some(&format!("fun_{f}"))), ops.new_dynamic_label());
-                    
-                    // dynasm!(ops; .arch x64; => fun_lbl);
+                    com.fns
+                        .insert(f.clone(), FunEnv::new(a.len() as i32, depth));
+                    labels.insert(
+                        Label::new(Some(&format!("fun_{f}"))),
+                        ops.new_dynamic_label(),
+                    );
+
                     instrs_to_asm(&instrs, &mut ops, &mut labels);
                     if let Err(e) = ops.commit() {
                         println!("{e}");
@@ -242,7 +245,7 @@ pub fn repl(eval_input: Option<(&Expr, &str)>) {
                         println!("{i:?}");
                     }
                     continue;
-                },
+                }
                 CompileResponse::Expr(instrs) => instrs,
             };
 
